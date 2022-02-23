@@ -1,0 +1,417 @@
+<!DOCTYPE html>
+<html lang="de" translate="no">
+<head>
+  <meta charset="utf-8">
+  <meta content="IE=edge" http-equiv="X-UA-Compatible">
+  <meta content="width=device-width, initial-scale=1" name="viewport">
+  <!-- The above 3 meta tags *must* come first in the head; any other head content must come *after* these tags -->
+  <title>Timer | Speckflags Bremen</title>
+
+  <link href="bootstrap.min.css" rel="stylesheet" type="text/css"/>
+</head>
+<body>
+<br/>
+<div class="container-fluid" style="width: 98%;">
+  <div class="row">
+    <div class="col-12 text-center">
+      <h4>Speckflags Bremen | Timer </h4>
+      <br/>
+    </div>
+
+    <div class="col-12">
+      <div class="card">
+        <div class="row">
+          <div class="col-7 border-right" id="playclock">
+            <div class="card-body h1 text-center" style="font-size:15vh">
+              <span id="timer">--</span>
+          </div>
+            </div>
+          <div class="col-5 text-center h2" >
+            <br />
+            <span id="down">1st</span>
+            <br />down
+          </div>
+
+      </div>
+      <div class="card-footer text-center border-bottom">
+        <button class="btn btn-lg btn-primary" id="startTimer">Timer starten</button>
+      </div>
+      <div class="card-body">
+        <div class="progress" style="height: 3vh">
+          <div aria-valuemax="100" aria-valuemin="0"
+               aria-valuenow="50" class="progress-bar progress-bar-striped bg-success" id="progress-bar" role="progressbar"
+               style="width: 100%"></div>
+        </div>
+      </div>
+        <div class="card-body">
+          <div class="row">
+            <div class="col-4 offset-1 text-center">
+              <button class="btn btn-lg" id="nextDown">2nd down</button>
+            </div>
+              <div class="col-4 offset-1 text-center">
+              <button class="btn btn-lg" id="firstDown">1st down</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    <br/>
+
+  </div>
+
+  <div class="col-12">
+    <div class="card">
+      <div class="card-header">Score</div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-5 h4 text-center" id="teamA">Team A</div>
+          <div class="offset-2 col-5 h4 text-center" id="teamB">Team B</div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-5 h4 text-center">
+            <button class="btn btn-lg btn-success" onclick="score(1,6)">TD (6)</button>
+          </div>
+          <div class="col-5 offset-2 h4 text-center">
+            <button class="btn btn-lg btn-success" onclick="score(2,6)">TD (6)</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-5 h4 text-center">
+            <button class="btn btn-lg btn-success" onclick="score(1,1)">1 Pt. (1)</button>
+          </div>
+          <div class="col-5 offset-2 h4 text-center">
+            <button class="btn btn-lg btn-success" onclick="score(2,1)">1 Pt. (1)</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-5 h4 text-center">
+            <button class="btn btn-lg btn-success" onclick="score(1,2)">2 Pt. (2)</button>
+          </div>
+          <div class="col-5 offset-2 h4 text-center">
+            <button class="btn btn-lg btn-success" onclick="score(2,2)">2 Pt. (2)</button>
+          </div>
+        </div>
+        <hr />
+        <div class="row">
+          <div class="col-5 h1 text-center" id="scoreA">0</div>
+          <div class="col-2 h1 text-center">:</div>
+          <div class="col-5 h1 text-center" id="scoreB">0</div>
+        </div>
+
+
+      </div>
+    </div>
+  </div>
+
+
+  <div class="col-12">
+    <br />
+    <div class="card">
+      <div class="card-header">Konfiguration || Beim Scoring verklickt? Hier Scores wieder abziehen</div>
+      <div class="card-body">
+        <div class="row">
+          <div class="col-lg-1 col-4">
+            <label for="inputTimerDuration">Timer-Duration:</label>
+          </div>
+          <div class="input-group col-8 col-lg-3">
+            <input type="number" id="inputTimerDuration" placeholder="25" min="1" max="60" onkeyup="setTimerDuration()" class="form-control"/>
+            <div class="input-group-append">
+              <span class="input-group-text">Sek.</span>
+            </div>
+          </div>
+          <div class="col-12 col-lg-3">(Standard: 25 Sek.)</div>
+
+          <div class="col-12">
+            <hr />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-5 text-center">
+            <input type="text" id="inputTeamA" placeholder="Team A" onkeyup="saveTeams()" class="form-control"/>
+          </div>
+          <div class="col-2 text-center">:</div>
+          <div class="col-5 text-center">
+            <input type="text" id="inputTeamB" placeholder="Team B" onkeyup="saveTeams()" class="form-control"/>
+            <br />
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-5 h4 text-center">
+            <button class="btn btn-lg btn-danger" onclick="score(1,-6)">TD (-6)</button>
+          </div>
+          <div class="col-5 offset-2 h4 text-center">
+            <button class="btn btn-lg btn-danger" onclick="score(2,-6)">TD (-6)</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-5 h4 text-center">
+            <button class="btn btn-lg btn-danger" onclick="score(1,-1)">1 Pt. (-1)</button>
+          </div>
+          <div class="col-5 offset-2 h4 text-center">
+            <button class="btn btn-lg btn-danger" onclick="score(2,-1)">1 Pt. (-1)</button>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col-5 h4 text-center">
+            <button class="btn btn-lg btn-danger" onclick="score(1,-2)">2 Pt. (-2)</button>
+          </div>
+          <div class="col-5 offset-2 h4 text-center">
+            <button class="btn btn-lg btn-danger" onclick="score(2,-2)">2 Pt. (-2)</button>
+          </div>
+        </div>
+      </div>
+
+      <div class="card-footer text-center">
+        <button class="btn btn-lg" onclick="resetStorage()" >Zurücksetzen &amp; neues Spiel</button>
+      </div>
+    </div>
+    <br/>
+    <div class="card">
+      <div class="card-header">Spielfilm</div>
+      <table class="table card-body">
+        <thead>
+        <tr>
+          <th>Score</th>
+          <th>Event</th>
+        </tr>
+        </thead>
+        <tbody id="log">
+
+        </tbody>
+      </table>
+    </div>
+    <br/>
+  </div>
+
+  <script charset="utf-8" type="text/javascript">
+    let countdownRef;
+
+    let scoreA = 0;
+    let scoreB = 0;
+    let teamA = 'Team A';
+    let teamB = 'Team B';
+    let log = [];
+    let timerDuration = 25;
+
+    let down = 1;
+
+    document.addEventListener("DOMContentLoaded", function() {
+      loadStorage();
+    });
+
+    let setStorage = function() {
+      localStorage.setItem('sf_timerDuration', timerDuration);
+      localStorage.setItem('sf_scoreTeamA', teamA);
+      localStorage.setItem('sf_scoreTeamB', teamB);
+      localStorage.setItem('sf_scoreScoreA', scoreA);
+      localStorage.setItem('sf_scoreScoreB', scoreB);
+      localStorage.setItem('sf_scoreDown', down);
+      localStorage.setItem('sf_scoreLog', JSON.stringify(log));
+    }
+
+    let getFromStorage = function(key, defaultValue) {
+      const stored = localStorage.getItem(key);
+      return (stored) ? stored : defaultValue;
+    }
+
+    let loadStorage = function() {
+      timerDuration = parseInt(getFromStorage('sf_timerDuration', 25));
+      teamA = getFromStorage('sf_scoreTeamA', 'Team A');
+      teamB = getFromStorage('sf_scoreTeamB', 'Team B');
+      scoreA = parseInt(getFromStorage('sf_scoreScoreA', 0));
+      scoreB = parseInt(getFromStorage('sf_scoreScoreB', 0));
+      down = parseInt(getFromStorage('sf_scoreDown', 1));
+      log =  JSON.parse(getFromStorage('sf_scoreLog', '[]'));
+
+      updateScore();
+      updateTeams();
+      updateLog();
+      updateDown();
+      updateTimerDuration();
+    }
+
+    let resetStorage = function() {
+      let resetConfirmed = confirm("Spieldaten zurücksetzen?");
+      if (resetConfirmed) {
+        localStorage.removeItem('sf_scoreTeamA');
+        localStorage.removeItem('sf_scoreTeamB');
+        localStorage.removeItem('sf_scoreScoreA');
+        localStorage.removeItem('sf_scoreScoreB');
+        localStorage.removeItem('sf_scoreDown');
+        localStorage.removeItem('sf_scoreLog');
+
+        loadStorage();
+      }
+    }
+
+    let updateScore = function() {
+      document.getElementById('scoreA').textContent = scoreA;
+      document.getElementById('scoreB').textContent = scoreB;
+    }
+
+    let updateTimerDuration = function() {
+      document.getElementById('inputTimerDuration').value = timerDuration;
+    }
+
+    let updateTeams = function() {
+      document.getElementById('teamA').textContent = teamA;
+      document.getElementById('teamB').textContent = teamB;
+      document.getElementById('inputTeamA').value = teamA;
+      document.getElementById('inputTeamB').value = teamB;
+    }
+
+    let updateLog = function() {
+      // to be implemented
+      let logTable = document.getElementById('log');
+      logTable.innerHTML = '';
+      log.forEach(function(elem) {
+        logTable.innerHTML += '<tr><td>' + elem[0] + '</td><td>' + elem[1] + '</td></tr>';
+      });
+    }
+
+    let score = function(team, scoring) {
+      if (team === 1) {
+        scoreA += scoring;
+        log = [[scoreA + ":" + scoreB, scoring + "Punkte für " + teamA]].concat(log);
+      } else if (team === 2) {
+        scoreB += scoring;
+        log = [[scoreA + ":" + scoreB, scoring + "Punkte für " + teamB]].concat(log);
+      }
+
+      setStorage();
+
+      updateScore();
+      updateLog();
+    }
+
+    let saveTeams = function() {
+      teamA = document.getElementById('inputTeamA').value;
+      teamB = document.getElementById('inputTeamB').value;
+      updateTeams();
+      setStorage();
+    }
+
+    let setTimerDuration = function() {
+      timerDuration = document.getElementById('inputTimerDuration').value;
+      setStorage();
+    }
+
+    let startTimer = function () {
+      let timerLbl = document.querySelector('#timer');
+      let displayProgressBar = document.querySelector('#progress-bar');
+      document.getElementById('playclock').classList.remove('bg-danger');
+      document.getElementById('startTimer').classList.remove('btn-primary');
+
+      displayProgressBar.classList.remove('bg-warning');
+      displayProgressBar.classList.remove('bg-danger');
+      displayProgressBar.classList.add('bg-success');
+      displayProgressBar.style = 'width: 100%';
+
+      timerLbl.textContent = '' + showTime(timerDuration);
+
+      countdownRef = counter(timerDuration-1, timerLbl, countdownRef, displayProgressBar, timerDuration);
+    }
+
+    function showTime(timeSeconds) {
+      let seconds = parseInt(timeSeconds % 60, 10);
+
+      if (timeSeconds < 0) {
+        seconds = Math.abs(seconds) < 10 ? "0" + Math.abs(seconds) : Math.abs(seconds);
+      } else {
+        seconds = seconds < 10 ? "0" + seconds : seconds;
+      }
+
+      return seconds;
+    }
+
+    function counter(duration, display, intRef, progressBar, maxTime) {
+      let timer = duration;
+
+      if (intRef) {
+        clearInterval(intRef);
+      }
+
+      return setInterval(function () {
+        display.textContent = showTime(timer);
+
+        if (timer === 0) {
+          document.getElementById('playclock').classList.add('bg-danger');
+          document.getElementById('startTimer').classList.add('btn-primary');
+          clearInterval(intRef);
+          if (progressBar) {
+            progressBar.style = 'width: 0%';
+          }
+          return;
+        }
+
+        if (progressBar) {
+          if (timer < maxTime) {
+            progressBar.style = 'width: ' + timer / maxTime * 100 + '%';
+            progressBar.ariaValuenow = timer;
+            progressBar.ariaValuemax = maxTime;
+          } else {
+            progressBar.style = 'width: 100%';
+            progressBar.ariaValuenow = maxTime;
+            progressBar.ariaValuemax = maxTime;
+          }
+
+          if (timer <= 15) {
+            progressBar.classList.remove('bg-success');
+            progressBar.classList.add('bg-warning');
+          }
+
+          if (timer <= 5) {
+            progressBar.classList.remove('bg-info');
+            progressBar.classList.add('bg-danger');
+          }
+        }
+        timer += -1;
+
+      }, 1000);
+    }
+
+    let btnNextDown = document.getElementById('nextDown');
+    let btnFirstDown = document.getElementById('firstDown');
+    let lblDown = document.getElementById('down');
+
+    let downPlus1 = function() {
+      down += 1;
+
+      if (down === 4) {
+        btnNextDown.classList.add('disabled');
+      }
+
+      if (down >= 5) {
+        return;
+      }
+
+      updateDown();
+      setStorage();
+    }
+
+    let updateDown = function() {
+      let labels = ['', '1st', '2nd', '3rd', '4th']
+
+      btnNextDown.textContent = labels[Math.min(down+1, 4)] + ' down';
+      lblDown.textContent = labels[down];
+    }
+
+    let downFirst = function() {
+      down = 1;
+      btnNextDown.classList.remove('disabled');
+      updateDown();
+      setStorage();
+    }
+
+    document.getElementById('startTimer').addEventListener("click", startTimer);
+    btnNextDown.addEventListener("click", downPlus1);
+    btnFirstDown.addEventListener("click", downFirst);
+
+    //startTimer(25);
+  </script>
+</div>
+
+</div>
+</body>
+</html>
+
